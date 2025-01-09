@@ -5,6 +5,7 @@ function Book(title,author,pages) {
   this.title = title;
   this.author = author;
   this.pages = pages + " pages";
+  this.status = "not finished";
 }
 
 function addBookToLibrary(Book) {
@@ -12,21 +13,37 @@ function addBookToLibrary(Book) {
 }
 
 function showBooks(){
-    myLibrary.forEach((book) => {
+    myLibrary.forEach((book,index) => {
         const card = document.createElement("div");
         const footer = document.createElement("div");
-        const nodes = ["title","author","pages"];;
+        const nodes = ["title","author","pages","status"];;
 
-        for (let index = 0; index <= 2; index++) {
+        for (let index = 0; index <= 3; index++) {
             let node = document.createElement("div");
             node.textContent = book[`${nodes[index]}`];
 
             (index > 0) ? footer.appendChild(node) : card.appendChild(node);
         }
 
+        let delete_button = document.createElement("button");
+        delete_button.textContent = "DELETE";
+        delete_button.setAttribute("id",index);
+        delete_button.classList.add("delete-book");
+
+        let change_status_button =  document.createElement("button");
+        change_status_button.textContent = "DONE";
+        change_status_button.setAttribute("id",index);
+        change_status_button.classList.add("change-status");
+    
+
+        footer.appendChild(change_status_button);
+        footer.appendChild(delete_button);
         card.appendChild(footer);
         card.classList.add("card");
         container.appendChild(card);
+
+        addDeleteButtonsFunction();
+        addChangeButtonsFunction();
     })
 }
 
@@ -35,6 +52,35 @@ function updateContent(){
     modal.style.display = "none";
     container.innerHTML = "";
     showBooks();
+}
+
+function deleteBook(e){
+    let id = e.target.id;
+    console.log(id);
+    myLibrary.splice(id,1); 
+    updateContent();
+}
+
+function changeStatus(e){
+    let id = e.target.id;
+    myLibrary[id].status = "Finished Reading";
+    updateContent();
+}
+
+function addDeleteButtonsFunction(){
+    const delete_book_buttons = document.querySelectorAll(".delete-book");
+    Array.from(delete_book_buttons).forEach(button => {
+        button.addEventListener("click", deleteBook);
+    }
+    );
+}
+
+function addChangeButtonsFunction(){
+    const change_status_buttons = document.querySelectorAll(".change-status");
+    Array.from(change_status_buttons).forEach(button => {
+        button.addEventListener("click", changeStatus);
+    }
+    );
 }
 
 
