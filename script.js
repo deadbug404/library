@@ -4,7 +4,7 @@ const container = document.querySelector("#container");
 function Book(title,author,pages) {
   this.title = title;
   this.author = author;
-  this.pages = pages + " pages";
+  this.pages = "Pages: " + pages;
   this.status = "not finished";
 }
 
@@ -88,7 +88,6 @@ const modal = document.querySelector(".modal");
 const add_book_form = document.querySelector("#add-book-form");
 const add_book_button = document.querySelector("#add-book");
 const close_button = document.querySelector("#close-button");
-const add_button = document.querySelector("#add-button")
 
 add_book_button.addEventListener("click", e => {
     modal.style.display = "block";
@@ -98,7 +97,8 @@ close_button.addEventListener("click", e =>{
     modal.style.display = "none";
 })
 
-add_button.addEventListener("click", e => {
+add_book_form.addEventListener("submit", e => {
+    e.preventDefault();
     let title = document.querySelector("#title");
     let author = document.querySelector("#author");
     let pages = document.querySelector("#pages");
@@ -106,6 +106,4 @@ add_button.addEventListener("click", e => {
     let book = new Book(title.value,author.value,pages.value);
     addBookToLibrary(book);
     updateContent();
-    e.preventDefault();
 })
-
